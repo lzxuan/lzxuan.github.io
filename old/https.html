@@ -4,13 +4,7 @@
 	<body>
 		<script>
 		$(document).ready(function() {
-			var url = "";
-			
-			function getUrl() {
-				url = window.location.href.slice(window.location.href.indexOf('?') + 1);
-			}
-
-			$.getJSON(url, function(data) {
+			$.getJSON("http://www.quotzzy.co/api/quote", function(data) {
 				$(document.body).append(data);
 			}
 		});
