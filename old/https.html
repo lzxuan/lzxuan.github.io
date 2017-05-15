@@ -1,0 +1,19 @@
+<html>
+	<head>
+	</head>
+	<body>
+		<script>
+		$(document).ready(function() {
+			var url = "";
+			
+			function getUrl() {
+				url = window.location.href.slice(window.location.href.indexOf('?') + 1);
+			}
+
+			$.getJSON(url, function(data) {
+				$(document.body).append(data);
+			}
+		});
+		</script>
+	</body>
+</html>
