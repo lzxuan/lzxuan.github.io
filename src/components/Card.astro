@@ -1,0 +1,84 @@
+---
+import '../styles/global.css';
+
+export interface Props {
+  href?: string,
+  title: string,
+  body?: string,
+  hint?: string,
+}
+
+const { href = '', title, body = '', hint = '' } = Astro.props as Props;
+---
+
+<li class="card">
+  <a href={href} target="_blank" class={ href ? '' : 'disabled' }>
+    <h3>
+      {title}
+      {href ? (<span>-&gt;</span>) : ''}
+    </h3>
+    {body ? (<p>{body}</p>) : ''}
+    {hint ?  (<small>{hint}</small>) : ''}
+  </a>
+</li>
+
+<style>
+  .card {
+    list-style: none;
+    display: flex;
+    padding: 0.15rem;
+    background-image: var(--gradient-card);
+    background-size: 400%;
+    border-radius: 0.5rem;
+    background-position: 100%;
+    transition: background-position 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .card>a {
+    width: 100%;
+    text-decoration: none;
+    line-height: 1.4;
+    padding: 1em 1.3em;
+    border-radius: 0.35rem;
+    color: var(--color-text);
+    background-color: var(--color-bg);
+    opacity: 0.8;
+  }
+
+  .card>a.disabled {
+    pointer-events: none;
+  }
+
+  .card>a>small {
+    display: block;
+    margin-top: 0.75em;
+    color: var(--color-hint);
+  }
+
+  h3 {
+    margin: 0;
+    transition: color 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  p {
+    margin-top: 0.75rem;
+    margin-bottom: 0;
+  }
+
+  h3 span {
+    display: inline-block;
+    transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .card:is(:hover, :focus-within) {
+    background-position: 0;
+  }
+
+  .card:is(:hover, :focus-within) h3 {
+    color: #39FF13;
+  }
+
+  .card:is(:hover, :focus-within) h3 span {
+    transform: translateX(2px);
+  }
+</style>

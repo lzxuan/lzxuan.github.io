@@ -1,0 +1,144 @@
+---
+import '../styles/global.css';
+import Layout from '../layouts/Layout.astro';
+import Card from '../components/Card.astro';
+---
+
+<Layout title="Lim Zhi Xuan">
+  <main>
+    <h1 class="text-gradient">Lim Zhi Xuan<span class="blink text-gradient">_</span></h1>
+    <h2 class="text-gradient">DevOps/SRE Engineer</h2>
+    <p>
+      Now working as a DevOps/SRE Engineer, I'm an Information Security graduate, who, in leisure, works on
+      personal
+      programming projects, plays cybersecurity CTFs and reads to help realize my unstoppable ideas and satisfy my
+      never-ending curiosity.
+    </p>
+    <p>
+      Obsessed with automation (spending hours writing scripts to replace manual tasks that can be done in minutes XD).
+      Perfectionist in writing clean, optimized and self-documented code, with security in mind.
+    </p>
+    <p>
+      Starting with basic HTML and CSS when I was still a kid, continuing exploring C and PHP on my own during my
+      teenage years, I then learnt more systematically on C, Bash, Java, PHP, C#, JavaScript, Python and Kotlin in my
+      university, before currently diving into the world of Bash, Go, Ruby, Lua (LuaJIT) and TypeScript.
+    </p>
+    <p style="margin-bottom: 0.25em;">
+      These are some tools that I'm familiar with:
+    </p>
+    <ul>
+      <li>Docker</li>
+      <li>Kubernetes</li>
+      <li>Helm</li>
+      <li>GitLab CI</li>
+      <li>OpenProject</li>
+      <li>HashiCorp Terraform</li>
+      <li>HashiCorp Packer</li>
+      <li>HashiCorp Vagrant</li>
+      <li>HashiCorp Vault</li>
+      <li>Banzai Cloud Bank-Vaults</li>
+      <li>Prometheus</li>
+      <li>Grafana</li>
+      <li>Apache APISIX</li>
+    </ul>
+    <h2 class="text-gradient">Side Projects!</h2>
+    <ul role="list" class="grid-two">
+      <Card href="https://canyouseeme.ml/" title="😎 Can You See Me?"
+        body="Challenge portal of TAR UC CTF S1 cybersecurity competition, attracted ~150 participants."
+        hint="Hit me up for tips or write-up!" />
+      <Card href="https://dtmf.netlify.app/" title="☎️ DTMF Decoder"
+        body="Decode DTMF tones in audio files using Goertzel algorithm, implemented in JavaScript."
+        hint="Running entirely at browser!" />
+      <Card title="📃 Utilities Helper"
+        body="Python script to scrap TNB & Air Selangor bills, store them in Firebase and notify for updates via Telegram bot."
+        hint="Broken now, btw publish API please!!!" />
+    </ul>
+    <h2 class="text-gradient">Say Hi!</h2>
+    <ul role="list" class="grid-three">
+      <Card href="mailto:hi@zhxn.ml" title="hi@zhxn.ml" />
+      <Card href="https://www.linkedin.com/in/limzx/" title="LinkedIn" />
+      <Card href="https://github.com/lzxuan" title="GitHub" />
+    </ul>
+  </main>
+</Layout>
+
+<style>
+  main {
+    margin: auto;
+    padding: 1em;
+    padding-bottom: 2em;
+    max-width: 81ch;
+  }
+
+  h2:not(:first-of-type) {
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
+  }
+
+  p~ul {
+    margin-top: 0.25em;
+  }
+
+  p~ul>li:nth-child(odd) {
+    color: var(--color-text);
+  }
+
+  p~ul>li:nth-child(even) {
+    color: var(--color-hint);
+  }
+
+  .text-gradient {
+    font-weight: 900;
+    background-image: var(--gradient-text);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-size: 100% 200%;
+    background-position-y: 100%;
+    border-radius: 0.4rem;
+    animation: pulse 4s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+
+    0%,
+    100% {
+      background-position-y: 0%;
+    }
+
+    50% {
+      background-position-y: 80%;
+    }
+  }
+
+  .blink {
+    animation: blink 1s step-start infinite;
+  }
+
+  @keyframes blink {
+    0% {
+      opacity: 1.0;
+    }
+
+    50% {
+      opacity: 0.0;
+    }
+
+    100% {
+      opacity: 1.0;
+    }
+  }
+
+  .grid-two {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(30ch, 1fr));
+    gap: 1rem;
+    padding: 0;
+  }
+
+  .grid-three {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(20ch, 1fr));
+    gap: 1rem;
+    padding: 0;
+  }
+</style>
