@@ -74,7 +74,7 @@ const { href = '', title, body = '', hint = '' } = Astro.props as Props;
   }
 
   .card:is(:hover, :focus-within) h3 {
-    color: #39FF13;
+    color: var(--color-primary);
   }
 
   .card:is(:hover, :focus-within) h3 span {
