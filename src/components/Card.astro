@@ -14,11 +14,10 @@ const { href = '', title, body = '', hint = '' } = Astro.props as Props;
 <li class="card">
   <a href={href} target="_blank" class={ href ? '' : 'disabled' }>
     <h3>
-      {title}
-      {href ? (<span>-&gt;</span>) : ''}
+      {title} {href ? <span>-&gt;</span> : ''}
     </h3>
-    {body ? (<p>{body}</p>) : ''}
-    {hint ?  (<small>{hint}</small>) : ''}
+    {body ? <p>{body}</p> : ''}
+    {hint ? <small>{hint}</small> : ''}
   </a>
 </li>
 
