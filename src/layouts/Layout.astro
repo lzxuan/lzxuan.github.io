@@ -2,47 +2,332 @@
 import '../styles/global.css';
 
 export interface Props {
-  title: string,
+  title: string;
+  description?: string;
 }
 
-const { title } = Astro.props as Props;
+const {
+  title,
+  description = 'Lim Zhi Xuan — DevOps/SRE Engineer building reliable systems with automation and security in mind.',
+} = Astro.props as Props;
+
+// `site` is set in astro.config.mjs and must match public/CNAME.
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const ogImage = new URL('/android-chrome-512x512.png', canonical);
 ---
 
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#050806" />
+    <link rel="canonical" href={canonical.href} />
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width">
-  <title>{title}</title>
-  <meta property="og:url" content="https://limzhixuan.ml/">
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="Lim Zhi Xuan">
-  <meta property="og:description" content="Lim Zhi Xuan - DevOps/SRE Engineer">
-  <meta property="og:image" content="/android-chrome-512x512.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-  <link rel="manifest" href="/site.webmanifest">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&display=swap" rel="stylesheet">
-</head>
+    <meta property="og:url" content={canonical.href} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage.href} />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage.href} />
 
-<body>
-  <slot />
-</body>
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="manifest" href="/site.webmanifest" />
 
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <div class="scroll-progress" aria-hidden="true"></div>
+
+    <div class="atmosphere" aria-hidden="true">
+      <div class="bg-aurora"></div>
+      <div class="bg-beams"></div>
+      <div class="bg-grain"></div>
+      <div class="bg-vignette"></div>
+    </div>
+
+    <slot />
+  </body>
 </html>
 
-<style>
+<style is:global>
   html {
-    font-family: 'Fira Code', monospace;
+    font-family: var(--font-display);
     color: var(--color-text);
     background-color: var(--color-bg);
   }
 
   body {
+    position: relative;
     margin: 0;
+    min-height: 100vh;
+    min-height: 100dvh;
+    overflow-x: hidden;
+  }
+
+  /* —— Scroll progress —— */
+  .scroll-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 40;
+    height: 2px;
+    width: 100%;
+    transform: scaleX(var(--scroll-progress));
+    transform-origin: left;
+    background: linear-gradient(90deg, var(--color-secondary), var(--color-primary));
+    box-shadow: 0 0 14px rgba(61, 255, 122, 0.5);
+    pointer-events: none;
+  }
+
+  /* —— Atmosphere —— */
+  .atmosphere {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  .atmosphere > * {
+    position: absolute;
+    inset: 0;
+  }
+
+  /* Slow-drifting colour fields */
+  .bg-aurora {
+    inset: -30%;
+    background:
+      radial-gradient(ellipse 55% 40% at 18% 12%, rgba(0, 229, 195, 0.2), transparent 62%),
+      radial-gradient(ellipse 45% 35% at 82% 6%, rgba(61, 255, 122, 0.16), transparent 60%),
+      radial-gradient(ellipse 50% 40% at 70% 55%, rgba(0, 229, 195, 0.09), transparent 62%),
+      radial-gradient(ellipse 60% 45% at 40% 105%, rgba(26, 158, 74, 0.14), transparent 62%);
+    filter: blur(24px);
+    animation: aurora-drift 26s var(--ease-in-out) infinite alternate;
+    will-change: transform;
+  }
+
+  @keyframes aurora-drift {
+    0% {
+      transform: translate3d(-2%, -1%, 0) scale(1);
+    }
+    50% {
+      transform: translate3d(2%, 2%, 0) scale(1.06);
+    }
+    100% {
+      transform: translate3d(-1%, 3%, 0) scale(1.02);
+    }
+  }
+
+  /* Diagonal light shafts */
+  .bg-beams {
+    inset: -45% -20%;
+    background:
+      linear-gradient(105deg, transparent 42%, rgba(61, 255, 122, 0.05) 48%, transparent 55%),
+      linear-gradient(75deg, transparent 38%, rgba(0, 229, 195, 0.055) 50%, transparent 61%);
+    opacity: 0.5;
+    animation: beam-sweep 18s var(--ease-in-out) infinite alternate;
+    will-change: transform;
+  }
+
+  @keyframes beam-sweep {
+    to {
+      transform: translate3d(6%, -4%, 0) rotate(2deg);
+    }
+  }
+
+  /* Film grain keeps the flat gradients from banding */
+  .bg-grain {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+    opacity: 0.035;
+    mix-blend-mode: overlay;
+  }
+
+  .bg-vignette {
+    background: radial-gradient(ellipse 80% 60% at 50% 40%, transparent 40%, rgba(2, 4, 3, 0.75) 100%);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .bg-aurora,
+    .bg-beams {
+      animation: none !important;
+    }
   }
 </style>
+
+<script>
+  const root = document.documentElement;
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const finePointer = window.matchMedia('(pointer: fine)');
+
+  /* ---------------------------------------------------------------------
+     Scroll progress — written once per frame instead of once per event.
+     --------------------------------------------------------------------- */
+  let progressQueued = false;
+
+  const writeScrollProgress = () => {
+    progressQueued = false;
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
+    root.style.setProperty('--scroll-progress', progress.toFixed(4));
+  };
+
+  const queueScrollProgress = () => {
+    if (progressQueued) return;
+    progressQueued = true;
+    requestAnimationFrame(writeScrollProgress);
+  };
+
+  writeScrollProgress();
+  window.addEventListener('scroll', queueScrollProgress, { passive: true });
+  window.addEventListener('resize', queueScrollProgress, { passive: true });
+
+  /* ---------------------------------------------------------------------
+     Scroll reveal. Lives here so every component's `.reveal` is observed,
+     including ones rendered by child components.
+     --------------------------------------------------------------------- */
+  const reveals = document.querySelectorAll('.reveal');
+
+  if ('IntersectionObserver' in window) {
+    // A fixed inset rather than a percentage: a percentage of a tall
+    // viewport can exceed the space below the last element, leaving it
+    // permanently unable to satisfy the trigger.
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      },
+      { rootMargin: '0px 0px -60px 0px', threshold: 0 }
+    );
+
+    reveals.forEach((el) => observer.observe(el));
+
+    // Once the page is scrolled to the bottom, anything still hidden can
+    // never be scrolled any higher, so reveal whatever is left.
+    const revealRemaining = () => {
+      const atBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2;
+      if (!atBottom) return;
+      reveals.forEach((el) => {
+        el.classList.add('is-visible');
+        observer.unobserve(el);
+      });
+      window.removeEventListener('scroll', revealRemaining);
+    };
+
+    window.addEventListener('scroll', revealRemaining, { passive: true });
+  } else {
+    reveals.forEach((el) => el.classList.add('is-visible'));
+  }
+
+  /* ---------------------------------------------------------------------
+     Pointer-driven effects. All of these are fine-pointer only: they cost
+     nothing on touch devices and would be meaningless there anyway.
+     --------------------------------------------------------------------- */
+  const clamp = (value: number, limit: number) => Math.max(-limit, Math.min(limit, value));
+
+  /* One element can carry several effects — a card both glows and tilts, a
+     tool chip both glows and drifts. Wiring them together means a single
+     listener, a single `getBoundingClientRect` and a single style write per
+     frame, instead of one of each per effect. */
+  const attachPointerEffects = (el: HTMLElement) => {
+    // `[data-glow]` covers surfaces that are not links, such as tool chips.
+    const glows = el.matches('.clickable-surface, [data-glow]');
+    const magnetism = 'magnetic' in el.dataset ? Number(el.dataset.magnetic) || 12 : 0;
+    const tiltMax = 'tilt' in el.dataset ? Number(el.dataset.tilt) || 6 : 0;
+
+    let width = 1;
+    let height = 1;
+    let pointerX = 0;
+    let pointerY = 0;
+    // Trails `pointerX/Y`; the gradient eases into place rather than snapping.
+    let glowX = 0;
+    let glowY = 0;
+    let entered = false;
+    let frame = 0;
+
+    const write = () => {
+      frame = 0;
+
+      if (glows) {
+        glowX += (pointerX - glowX) * 0.18;
+        glowY += (pointerY - glowY) * 0.18;
+
+        // Normalised 0–100% so `background-position` can pan the gradient.
+        el.style.setProperty('--glow-px', `${(glowX / width) * 100}%`);
+        el.style.setProperty('--glow-py', `${(glowY / height) * 100}%`);
+
+        // Bearing from the centre to the cursor, in CSS gradient terms:
+        // 0deg points up and angles run clockwise. Taken from the eased
+        // position so the angle never wraps discontinuously.
+        const angle = (Math.atan2(glowX - width / 2, height / 2 - glowY) * 180) / Math.PI;
+        el.style.setProperty('--glow-angle', `${angle.toFixed(1)}deg`);
+      }
+
+      if (magnetism) {
+        el.style.setProperty('--tx', `${clamp(pointerX / (width / 2) - 1, 1) * magnetism}px`);
+        el.style.setProperty('--ty', `${clamp(pointerY / (height / 2) - 1, 1) * magnetism}px`);
+      }
+
+      if (tiltMax) {
+        el.style.setProperty('--ry', `${(pointerX / width - 0.5) * tiltMax * 2}deg`);
+        el.style.setProperty('--rx', `${(0.5 - pointerY / height) * tiltMax * 2}deg`);
+      }
+
+      // Keep going until the eased glow has caught up with the pointer.
+      const settled = Math.abs(pointerX - glowX) < 0.2 && Math.abs(pointerY - glowY) < 0.2;
+      if (glows && !settled) frame = requestAnimationFrame(write);
+    };
+
+    const track = (event: PointerEvent) => {
+      const rect = el.getBoundingClientRect();
+      width = rect.width || 1;
+      height = rect.height || 1;
+      pointerX = event.clientX - rect.left;
+      pointerY = event.clientY - rect.top;
+
+      // Start the glow under the cursor instead of sweeping in from a corner.
+      if (!entered) {
+        glowX = pointerX;
+        glowY = pointerY;
+        entered = true;
+      }
+
+      if (!frame) frame = requestAnimationFrame(write);
+    };
+
+    // The glow simply fades out on exit, so only the offsets need resetting.
+    const release = () => {
+      el.style.setProperty('--tx', '0px');
+      el.style.setProperty('--ty', '0px');
+      el.style.setProperty('--rx', '0deg');
+      el.style.setProperty('--ry', '0deg');
+      entered = false;
+    };
+
+    el.addEventListener('pointerenter', track, { passive: true });
+    el.addEventListener('pointermove', track, { passive: true });
+    el.addEventListener('pointerleave', release, { passive: true });
+  };
+
+  if (finePointer.matches && !reduceMotion.matches) {
+    document
+      .querySelectorAll<HTMLElement>('.clickable-surface, [data-glow], [data-magnetic], [data-tilt]')
+      .forEach(attachPointerEffects);
+  }
+</script>

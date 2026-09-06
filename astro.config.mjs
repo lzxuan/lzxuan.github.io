@@ -2,5 +2,9 @@ import { defineConfig } from 'astro/config';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://limzhixuan.ml'
+  // Must match public/CNAME so canonical + Open Graph URLs resolve.
+  site: 'https://zhixuanlim.com',
+  build: {
+    inlineStylesheets: 'auto'
+  }
 });

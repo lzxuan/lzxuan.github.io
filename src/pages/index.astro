@@ -1,144 +1,1026 @@
 ---
-import '../styles/global.css';
 import Layout from '../layouts/Layout.astro';
+import Nav from '../components/Nav.astro';
 import Card from '../components/Card.astro';
+
+const kicker = 'Infrastructure · Reliability · Security';
+
+/* Each headline splits into a plain lead and an outlined tail, so the
+   accent styling survives whichever sentence is on screen. */
+type Sentence = { lead: string; accent: string };
+
+const sentences: Sentence[] = [
+  { lead: 'I engineer calm into', accent: 'complex systems.' },
+  { lead: 'I automate the work', accent: 'nobody should repeat.' },
+  { lead: 'I make infrastructure', accent: 'boring — on purpose.' },
+  { lead: 'I build platforms', accent: 'that stay up.' },
+  { lead: 'I bake security in', accent: 'from the first commit.' },
+];
+
+const toolGroups = [
+  {
+    label: 'Cloud platforms',
+    items: ['Microsoft Azure', 'Alibaba Cloud', 'Google Cloud', 'Amazon Web Services'],
+  },
+  {
+    label: 'Containers & orchestration',
+    items: ['Docker', 'Kubernetes', 'Helm'],
+  },
+  {
+    label: 'Infrastructure as code',
+    items: ['HashiCorp Terraform', 'Gruntwork Terratest', 'HashiCorp Packer', 'Ansible'],
+  },
+  {
+    label: 'CI/CD',
+    items: ['GitLab CI/CD', 'Azure DevOps', 'Argo CD'],
+  },
+  {
+    label: 'Secrets management',
+    items: ['HashiCorp Vault', 'Banzai Cloud Bank-Vaults'],
+  },
+  {
+    label: 'Observability',
+    items: ['Prometheus', 'Grafana'],
+  },
+];
+
+// Number the tools continuously across groups.
+let runningCount = 0;
+const numberedGroups = toolGroups.map((group) => ({
+  label: group.label,
+  items: group.items.map((name) => ({ name, n: ++runningCount })),
+}));
 ---
 
 <Layout title="Lim Zhi Xuan">
-  <main>
-    <h1 class="text-gradient">Lim Zhi Xuan<span class="blink text-gradient">_</span></h1>
-    <h2 class="text-gradient">DevOps/SRE Engineer</h2>
-    <p>
-      Now working as a DevOps/SRE Engineer, I'm an Information Security graduate, who, in leisure, works on personal
-      programming projects, plays cybersecurity CTFs and reads to help realize my unstoppable ideas and satisfy my
-      never-ending curiosity.
-    </p>
-    <p>
-      Obsessed with automation (spending hours writing scripts to replace manual tasks that can be done in minutes XD).
-      Perfectionist in writing clean, optimized and self-documented code, with security in mind.
-    </p>
-    <p>
-      Starting with basic HTML and CSS when I was still a kid, continuing exploring C and PHP on my own during my
-      teenage years, I then learnt more systematically on C, Bash, Java, PHP, C#, JavaScript, Python and Kotlin in my
-      university, before currently diving into the world of Bash, Go, Ruby, Lua (LuaJIT) and TypeScript.
-    </p>
-    <p style="margin-bottom: 0.25em;">
-      Here are some tools that I'm familiar with:
-    </p>
-    <ul>
-      <li>Docker</li>
-      <li>Kubernetes</li>
-      <li>Helm</li>
-      <li>GitLab CI/CD</li>
-      <li>OpenProject</li>
-      <li>Gruntwork Terratest</li>
-      <li>HashiCorp Terraform</li>
-      <li>HashiCorp Packer</li>
-      <li>HashiCorp Vagrant</li>
-      <li>HashiCorp Vault</li>
-      <li>Banzai Cloud Bank-Vaults</li>
-      <li>Prometheus</li>
-      <li>Grafana</li>
-      <li>Apache APISIX</li>
-    </ul>
-    <h2 class="text-gradient">Side Projects!</h2>
-    <ul role="list" class="grid-two">
-      <Card href="https://canyouseeme.cf/" title="😎 Can You See Me?"
-        body="Challenge portal of TAR UC CTF S1 cybersecurity competition, attracted ~150 participants."
-        hint="Hit me up for tips or write-up!" />
-      <Card href="https://dtmf.netlify.app/" title="☎️ DTMF Decoder"
-        body="Decode DTMF tones in audio files using Goertzel algorithm, implemented in JavaScript."
-        hint="Running entirely at browser!" />
-      <Card title="📃 Utilities Helper"
-        body="Python script to scrap TNB & Air Selangor bills, store them in Firebase and notify for updates via Telegram bot."
-        hint="TNB & AS, publish API please!!!" />
-    </ul>
-    <h2 class="text-gradient">Say Hi!</h2>
-    <ul role="list" class="grid-three">
-      <Card href="mailto:hi@zhxn.cf" title="hi@zhxn.cf" />
-      <Card href="https://www.linkedin.com/in/limzx/" title="LinkedIn" />
-      <Card href="https://github.com/lzxuan" title="GitHub" />
-    </ul>
+  <Nav />
+
+  {/* `tabindex` lets the skip link actually move focus here, not just scroll. */}
+  <main id="main-content" tabindex="-1">
+    <section class="hero" id="top">
+      <div class="hero-copy">
+        <p class="eyebrow hero-in" style="--d: 0.12s">
+          <span class="eyebrow-index">01</span>
+          <span class="eyebrow-slash" aria-hidden="true">//</span>
+          <span class="eyebrow-label">{kicker}</span>
+        </p>
+
+        <p class="brand gradient-text hero-in" style="--d: 0.18s">Lim Zhi Xuan</p>
+
+        {/* The sizer sits outside the heading so the h1 only ever exposes
+            the sentence on screen — to crawlers as well as to readers. */}
+        <div class="typer" data-typer data-sentences={JSON.stringify(sentences)}>
+          {/* Every sentence stacked in one grid cell reserves the height of
+              the tallest, so rotating text never nudges the page. */}
+          <span class="typer-sizer" aria-hidden="true">
+            {sentences.map((sentence) => <span>{`${sentence.lead} ${sentence.accent}`}</span>)}
+          </span>
+
+          <h1 class="typer-live">
+            <span class="type-lead">{`${sentences[0].lead} `}</span><span class="type-accent"
+              >{sentences[0].accent}</span
+            ><span class="cursor" aria-hidden="true"></span>
+          </h1>
+        </div>
+
+        <p class="lede hero-in" style="--d: 0.62s">
+          DevOps / SRE engineer automating infrastructure, hardening systems, and shipping reliable platforms — driven
+          by curiosity and clean code.
+        </p>
+
+        <div class="cta-row hero-in" style="--d: 0.72s">
+          <a class="cta cta-primary clickable-surface" href="#projects" data-magnetic="8">
+            <span>Explore my work</span>
+            <b aria-hidden="true">↘</b>
+          </a>
+          <a class="cta clickable-surface" href="#contact" data-magnetic="8">
+            <span>Start a conversation</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="scroll-hint hero-in" style="--d: 1s" aria-hidden="true">
+        <span class="scroll-hint-line"></span>
+        <span>scroll</span>
+      </div>
+    </section>
+
+    <section class="section" id="about">
+      <div class="section-head reveal">
+        <div>
+          <p class="eyebrow">
+            <span class="eyebrow-index">02</span>
+            <span class="eyebrow-slash" aria-hidden="true">//</span>
+            <span class="eyebrow-label">About</span>
+          </p>
+          <h2 class="gradient-text">Built on curiosity</h2>
+        </div>
+        <span class="section-rule" aria-hidden="true"></span>
+      </div>
+
+      <div class="about-layout">
+        <p class="about-lead reveal">
+          I turn repetitive work into systems that run <em>quietly, securely, and predictably.</em>
+        </p>
+        <div class="about-copy">
+          <p class="reveal" style="--i: 0">
+            Information Security graduate turned DevOps/SRE Engineer. Off-hours: personal programming projects,
+            cybersecurity CTFs, and reading — chasing ideas and feeding an endless curiosity.
+          </p>
+          <p class="reveal" style="--i: 1">
+            Obsessed with automation (yes, spending hours scripting tasks that take minutes). Perfectionist about clean,
+            optimized, self-documented code — with security baked in.
+          </p>
+          <p class="reveal" style="--i: 2">
+            Started with HTML &amp; CSS as a kid, explored C and PHP as a teen, then systematically learned C, Bash, Java,
+            PHP, C#, JavaScript, Python and Kotlin at university. Now diving deeper into Bash, Go, Ruby, Lua (LuaJIT),
+            TypeScript, Python and PowerShell.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="stack">
+      <div class="section-head reveal">
+        <div>
+          <p class="eyebrow">
+            <span class="eyebrow-index">03</span>
+            <span class="eyebrow-slash" aria-hidden="true">//</span>
+            <span class="eyebrow-label">Stack</span>
+          </p>
+          <h2 class="gradient-text">Tools in the arsenal</h2>
+        </div>
+        <span class="section-rule" aria-hidden="true"></span>
+      </div>
+
+      <div class="stack-groups">
+        {
+          numberedGroups.map((group) => (
+            <section class:list={['stack-group', { 'stack-group--half': group.items.length <= 2 }]}>
+              <h3 class="stack-label reveal">
+                <span class="stack-bar" aria-hidden="true">▏</span>
+                {group.label}
+              </h3>
+              <ul class="tool-grid" role="list">
+                {group.items.map((tool, i) => (
+                  <li class="tool reveal" style={`--i: ${i}`} data-magnetic="5" data-glow>
+                    <span class="tool-index">{String(tool.n).padStart(2, '0')}</span>
+                    <span class="tool-name">{tool.name}</span>
+                    <span class="tool-glow" aria-hidden="true" />
+                  </li>
+                ))}
+              </ul>
+            </section>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="section" id="projects">
+      <div class="section-head reveal">
+        <div>
+          <p class="eyebrow">
+            <span class="eyebrow-index">04</span>
+            <span class="eyebrow-slash" aria-hidden="true">//</span>
+            <span class="eyebrow-label">Selected Work</span>
+          </p>
+          <h2 class="gradient-text">Side projects</h2>
+        </div>
+        <span class="section-rule" aria-hidden="true"></span>
+      </div>
+
+      <ul role="list" class="grid-projects">
+        <Card
+          index={1}
+          href="https://cysm.zhixuanlim.com/"
+          title="Can You See Me?"
+          body="Challenge portal for TAR UC CTF S1 — a cybersecurity competition that drew ~150 participants."
+          tags={['CTF', 'Web', 'Security']}
+          hint="Ask for tips or a write-up"
+        />
+        <Card
+          index={2}
+          href="https://dtmf.netlify.app/"
+          title="DTMF Decoder"
+          body="Decode DTMF tones from audio with the Goertzel algorithm — pure client-side JavaScript."
+          tags={['DSP', 'JavaScript', 'Web Audio']}
+          hint="Runs entirely in the browser"
+        />
+        <Card
+          index={3}
+          title="Utilities Helper"
+          body="Python scraper for TNB & Air Selangor bills, stored in Firebase with Telegram bot notifications."
+          tags={['Python', 'Firebase', 'Automation']}
+          hint="TNB & AS — publish an API please"
+        />
+      </ul>
+    </section>
+
+    <section class="section section-contact" id="contact">
+      <div class="section-head reveal">
+        <div>
+          <p class="eyebrow">
+            <span class="eyebrow-index">05</span>
+            <span class="eyebrow-slash" aria-hidden="true">//</span>
+            <span class="eyebrow-label">Contact</span>
+          </p>
+          <h2 class="gradient-text">Let’s build something reliable.</h2>
+        </div>
+        <span class="section-rule" aria-hidden="true"></span>
+      </div>
+
+      <ul role="list" class="grid-contact">
+        <Card href="mailto:hi@zhixuanlim.com" title="hi@zhixuanlim.com" />
+        <Card href="https://www.linkedin.com/in/limzx/" title="LinkedIn" />
+        <Card href="https://github.com/lzxuan" title="GitHub" />
+      </ul>
+    </section>
+
+    <footer class="footer reveal">
+      <span class="footer-brand">Lim Zhi Xuan</span>
+      <span>DevOps · SRE · Security</span>
+      <span class="footer-clock" aria-live="off">
+        <span class="pulse-dot" aria-hidden="true"></span>
+        <span data-clock-value>--:--:--</span>
+        <span class="footer-zone">MYT</span>
+      </span>
+    </footer>
   </main>
 </Layout>
 
 <style>
   main {
-    margin: auto;
-    padding: 1em;
-    padding-bottom: 2em;
-    max-width: 81ch;
+    position: relative;
+    z-index: 1;
+    margin: 0 auto;
+    padding: 0 2rem 4rem;
+    max-width: 76rem;
   }
 
-  h2:not(:first-of-type) {
-    margin-top: 1.5em;
-    margin-bottom: 0.5em;
+  /* —— Hero —— */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 8rem 0 5rem;
   }
 
-  p~ul {
-    margin-top: 0.25em;
+  .hero-copy {
+    max-width: 68rem;
   }
 
-  p~ul>li:nth-child(odd) {
+  .brand {
+    margin: 0 0 0.85rem;
+    font-family: var(--font-display);
+    font-size: clamp(1.7rem, 3.8vw, 2.6rem);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  /* The sizer and the heading share one grid cell. Type styles live here so
+     both children measure identically. */
+  .typer {
+    display: grid;
+    font-size: clamp(2.1rem, 5.4vw, 4.4rem);
+    font-weight: 600;
+    letter-spacing: -0.055em;
+    line-height: 1;
     color: var(--color-text);
   }
 
-  p~ul>li:nth-child(even) {
-    color: var(--color-hint);
+  .typer-sizer,
+  .typer-live {
+    grid-area: 1 / 1;
+    align-self: start;
+    min-width: 0;
   }
 
-  .text-gradient {
-    font-weight: 900;
-    background-image: var(--gradient-text);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-size: 100% 200%;
-    background-position-y: 100%;
-    border-radius: 0.4rem;
-    animation: pulse 4s ease-in-out infinite;
+  .typer-live {
+    margin: 0;
+    font: inherit;
+    letter-spacing: inherit;
   }
 
-  @keyframes pulse {
+  .typer-sizer {
+    display: grid;
+    visibility: hidden;
+    pointer-events: none;
+  }
 
-    0%,
-    100% {
-      background-position-y: 0%;
+  .typer-sizer > span {
+    grid-area: 1 / 1;
+  }
+
+  /* Outlined tail. Falls back to a solid fill where text-stroke is
+     unsupported, since transparent text would otherwise vanish. */
+  .type-accent {
+    color: var(--color-primary);
+  }
+
+  @supports (-webkit-text-stroke: 1px currentColor) {
+    .type-accent {
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(61, 255, 122, 0.85);
+      text-shadow: 0 0 48px rgba(61, 255, 122, 0.12);
     }
-
-    50% {
-      background-position-y: 80%;
-    }
   }
 
-  .blink {
-    animation: blink 1s step-start infinite;
+  .cursor {
+    display: inline-block;
+    width: 0.06em;
+    height: 0.78em;
+    margin-left: 0.06em;
+    vertical-align: -0.06em;
+    background: var(--color-primary);
+    box-shadow: 0 0 18px rgba(61, 255, 122, 0.6);
+    animation: blink 1.05s step-end infinite;
+  }
+
+  /* A real caret holds steady while characters are landing */
+  .typer.is-running .cursor {
+    animation: none;
+  }
+
+  .lede {
+    margin: 1.75rem 0 0;
+    max-width: 43rem;
+    font-size: clamp(1rem, 2.2vw, 1.15rem);
+    line-height: 1.65;
+    color: var(--color-text-muted);
+  }
+
+  .cta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 2rem;
+  }
+
+  .cta {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.25rem;
+    padding: 0.9rem 1.2rem;
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    font-weight: 500;
+    text-decoration: none;
+    transform: translate3d(var(--tx, 0px), var(--ty, 0px), 0);
+    transition:
+      transform 0.35s var(--ease-out),
+      border-color 0.3s var(--ease-out),
+      color 0.3s var(--ease-out),
+      box-shadow 0.3s var(--ease-out);
+  }
+
+  .cta-primary {
+    border-color: rgba(61, 255, 122, 0.4);
+    background: linear-gradient(145deg, rgba(24, 48, 32, 0.9), rgba(9, 18, 12, 0.94));
+  }
+
+  .cta b {
+    font-size: 1rem;
+    transition: transform 0.35s var(--ease-spring);
+  }
+
+  .cta:hover b {
+    transform: translate3d(3px, 3px, 0);
+  }
+
+  /* `--d` staggers the entrance, `--o` is the opacity it settles on. The
+     animation has to carry that opacity: a `forwards` fill outranks every
+     ordinary declaration, so anything set outside it would be ignored. */
+  .hero-in {
+    opacity: 0;
+    transform: translateY(18px);
+    animation: rise-in 0.85s var(--ease-out) forwards;
+    animation-delay: var(--d, 0s);
+  }
+
+  .scroll-hint {
+    --o: 0.7;
+    position: absolute;
+    left: 0;
+    bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    transition:
+      opacity 0.4s var(--ease-out),
+      transform 0.4s var(--ease-out);
+  }
+
+  /* Dropping `hero-in` retires the animation, which is what lets these
+     plain declarations — and the transition above — take effect. */
+  .scroll-hint.is-dismissed {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  /* A faint static track with a bright segment travelling down it. Moving a
+     clipped child by transform stays on the compositor, where scaling the
+     line itself distorted its gradient and jerked at each turnaround. */
+  .scroll-hint-line {
+    position: relative;
+    display: block;
+    width: 1px;
+    height: 2.4rem;
+    overflow: hidden;
+    background: linear-gradient(to bottom, rgba(61, 255, 122, 0.26), rgba(61, 255, 122, 0.04));
+  }
+
+  .scroll-hint-line::after {
+    content: '';
+    position: absolute;
+    inset-inline: 0;
+    top: 0;
+    height: 45%;
+    background: linear-gradient(to bottom, transparent, var(--color-primary));
+    animation: scroll-line 2.2s var(--ease-in-out) infinite;
+  }
+
+  /* —— Sections —— */
+  .section {
+    scroll-margin-top: 6rem;
+  }
+
+  /* The contact card sets its own uniform padding, so it is excluded here.
+     Its leading space comes from margin-top instead. */
+  .section:not(.section-contact) {
+    padding-top: 8rem;
+  }
+
+  .section-head {
+    display: flex;
+    align-items: flex-end;
+    gap: 2rem;
+    margin-bottom: 2.75rem;
+  }
+
+  /* One label style for the hero kicker and every section head */
+  .eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin: 0 0 0.55rem;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .eyebrow-index {
+    color: var(--color-primary);
+  }
+
+  .eyebrow-slash {
+    color: var(--color-primary-dim);
+  }
+
+  .eyebrow-label {
+    color: var(--color-text-muted);
+  }
+
+  /* The hero label needs more air beneath it than a section head does */
+  .hero .eyebrow {
+    margin-bottom: 1.1rem;
+  }
+
+  h2 {
+    margin: 0;
+    font-size: clamp(1.6rem, 3.5vw, 2.1rem);
+    font-weight: 600;
+    letter-spacing: -0.03em;
+  }
+
+  .section-rule {
+    flex: 1;
+    height: 1px;
+    margin-bottom: 0.5rem;
+    background: linear-gradient(90deg, var(--color-border), transparent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 1.1s 0.2s var(--ease-out);
+  }
+
+  .section-head.is-visible .section-rule {
+    transform: scaleX(1);
+  }
+
+  /* —— About —— */
+  .about-layout {
+    display: grid;
+    grid-template-columns: minmax(15rem, 0.85fr) minmax(20rem, 1.15fr);
+    gap: clamp(2.5rem, 8vw, 7rem);
+    align-items: start;
+  }
+
+  .about-lead {
+    position: sticky;
+    top: 7rem;
+    margin: 0;
+    font-size: clamp(1.55rem, 3vw, 2.25rem);
+    line-height: 1.2;
+    font-weight: 500;
+    letter-spacing: -0.04em;
+  }
+
+  .about-lead em {
+    color: var(--color-primary);
+    font-style: normal;
+  }
+
+  .about-copy {
+    display: flex;
+    flex-direction: column;
+    counter-reset: about;
+  }
+
+  .about-copy p {
+    position: relative;
+    counter-increment: about;
+    margin: 0;
+    padding: 1.4rem 0 1.4rem 2.5rem;
+    max-width: 42rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.07);
+    line-height: 1.7;
+    color: var(--color-text-muted);
+    font-size: 1.02rem;
+  }
+
+  .about-copy p::before {
+    content: '0' counter(about);
+    position: absolute;
+    top: 1.65rem;
+    left: 0;
+    color: var(--color-primary-dim);
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+  }
+
+  /* —— Stack —— */
+  /* Groups run full width, but any group of two or fewer tools takes half
+     a row so short groups pair up instead of each burning a whole row. */
+  .stack-groups {
+    /* Shared by the group columns and the cards inside them, so paired
+       groups line up on the same rhythm as a single group's tools. */
+    --tool-gap: 0.55rem;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 2.5rem var(--tool-gap);
+  }
+
+  .stack-group {
+    grid-column: span 2;
+    min-width: 0;
+  }
+
+  .stack-group--half {
+    grid-column: span 1;
+  }
+
+  .stack-label {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin: 0 0 0.9rem;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  /* Block glyph sized above the label text so it reads as a marker. The
+     character inks only the left edge of its cell, so the box is trimmed
+     to the ink — otherwise the empty cell reads as extra spacing. */
+  .stack-bar {
+    display: inline-block;
+    width: 0.14rem;
+    overflow: hidden;
+    font-size: 1rem;
+    line-height: 1;
+    color: var(--color-primary);
+  }
+
+  .tool-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
+    gap: var(--tool-gap);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .tool {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    /* Keeps the chip's blended glow from mixing with the page behind it */
+    isolation: isolate;
+    overflow: hidden;
+    padding: 0.75rem 0.95rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--surface-1);
+    cursor: default;
+    transition:
+      transform 0.35s var(--ease-out),
+      border-color 0.3s var(--ease-out),
+      background 0.3s var(--ease-out),
+      opacity 0.7s var(--ease-out),
+      filter 0.7s var(--ease-out);
+  }
+
+  /* The chip's entrance rides opacity and blur alone, leaving `transform`
+     free for the magnetic offset — sharing it would make the stagger delay
+     apply to cursor tracking too, so chips would lag behind the pointer.
+     Delays are listed in the same order as the transition above. */
+  .tool.reveal {
+    transform: translate3d(var(--tx, 0px), var(--ty, 0px), 0);
+    transition-delay: 0s, 0s, 0s, calc(var(--i, 0) * 45ms), calc(var(--i, 0) * 45ms);
+  }
+
+  .tool:hover {
+    border-color: var(--color-border-strong);
+    background: rgba(61, 255, 122, 0.06);
+    z-index: 2;
+  }
+
+  .tool-glow {
+    position: absolute;
+    inset: 0;
+    background-image: linear-gradient(var(--glow-angle, 135deg), var(--glow-stops));
+    background-size: 150% 150%;
+    background-position: var(--glow-px, 50%) var(--glow-py, 50%);
+    mix-blend-mode: screen;
+    opacity: 0;
+    transition: opacity 0.35s var(--ease-out);
+    pointer-events: none;
+  }
+
+  .tool:hover .tool-glow {
+    opacity: 1;
+  }
+
+  .tool-index {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--color-primary-dim);
+    transition:
+      color 0.3s var(--ease-out),
+      transform 0.3s var(--ease-spring);
+  }
+
+  .tool:hover .tool-index {
+    color: var(--color-primary);
+    transform: translateY(-1px);
+  }
+
+  .tool-name {
+    font-size: 0.92rem;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+
+  /* —— Grids —— */
+  .grid-projects {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
+    gap: 1.2rem;
+    padding: 0;
+    margin: 0;
+  }
+
+  .grid-contact {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+    gap: 1rem;
+    padding: 0;
+    margin: 0;
+  }
+
+  /* —— Contact —— */
+  .section-contact {
+    position: relative;
+    overflow: hidden;
+    margin-top: 8rem;
+    padding: clamp(2.2rem, 5vw, 4rem);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xl);
+    background:
+      radial-gradient(circle at 85% 10%, rgba(61, 255, 122, 0.1), transparent 32%),
+      linear-gradient(145deg, rgba(12, 22, 16, 0.9), rgba(5, 9, 6, 0.95));
+  }
+
+  /* Soft light spilling in from the top edge */
+  .section-contact::before {
+    content: '';
+    position: absolute;
+    inset-inline: 20%;
+    top: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(61, 255, 122, 0.5), transparent);
+    pointer-events: none;
+  }
+
+  .section-contact > * {
+    position: relative;
+  }
+
+  .section-contact .section-head {
+    margin-bottom: 2.2rem;
+  }
+
+  .section-contact h2 {
+    max-width: 30rem;
+    font-size: clamp(2rem, 5vw, 3.4rem);
+    line-height: 1.05;
+  }
+
+  /* —— Footer —— */
+  .footer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem 1.5rem;
+    margin-top: 5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--color-border);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+  }
+
+  .footer-brand {
+    color: var(--color-text);
+  }
+
+  .footer-clock {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .footer-zone {
+    color: var(--color-primary-dim);
+  }
+
+  /* —— Keyframes —— */
+  @keyframes rise-in {
+    to {
+      opacity: var(--o, 1);
+      transform: translateY(0);
+    }
   }
 
   @keyframes blink {
-    0% {
-      opacity: 1.0;
-    }
-
-    50% {
-      opacity: 0.0;
-    }
-
+    0%,
     100% {
-      opacity: 1.0;
+      opacity: 1;
+    }
+    50% {
+      opacity: 0;
     }
   }
 
-  .grid-two {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(30ch, 1fr));
-    gap: 1rem;
-    padding: 0;
+  /* Travels from just above the track to just below it. The percentages are
+     relative to the segment's own height, so 222% clears a track that is
+     1 / 0.45 times as tall. Fading at both ends hides the loop seam. */
+  @keyframes scroll-line {
+    0% {
+      transform: translateY(-100%);
+      opacity: 0;
+    }
+    25%,
+    70% {
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(222%);
+      opacity: 0;
+    }
   }
 
-  .grid-three {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(20ch, 1fr));
-    gap: 1rem;
-    padding: 0;
+  /* —— Responsive —— */
+  @media (max-width: 880px) {
+    .hero {
+      min-height: auto;
+      padding-top: 9.5rem;
+    }
+
+    .scroll-hint {
+      display: none;
+    }
+
+    /* Half a row is too narrow to fit two tool cards side by side here */
+    .stack-group--half {
+      grid-column: span 2;
+    }
+  }
+
+  @media (max-width: 680px) {
+    main {
+      padding-inline: 1.15rem;
+    }
+
+    .about-layout {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+
+    .about-lead {
+      position: static;
+    }
+
+    .section:not(.section-contact) {
+      padding-top: 6rem;
+    }
+
+    .section-contact {
+      margin-inline: -0.35rem;
+      margin-top: 6rem;
+    }
+
+    /* Three items cannot share a row here, and space-between strands
+       whichever one wraps. Stack them instead of letting them fall. */
+    .footer {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.6rem;
+    }
+  }
+
+  @media (max-width: 520px) {
+    .hero {
+      padding-top: 8.5rem;
+    }
+
+    .cta-row {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .section-head {
+      gap: 1rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-in {
+      opacity: var(--o, 1);
+      transform: none;
+      animation: none;
+    }
+
+    .cursor {
+      animation: none;
+    }
+
+    .cta,
+    .tool {
+      transform: none !important;
+    }
   }
 </style>
+
+<script>
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---------------------------------------------------------------------
+     Headline typewriter. Cycles the hero sentence, typing the plain lead
+     and the outlined tail into two separate spans so the accent styling
+     tracks the characters as they land.
+     --------------------------------------------------------------------- */
+  const typer = document.querySelector<HTMLElement>('[data-typer]');
+
+  if (typer && !reduceMotion) {
+    type Sentence = { lead: string; accent: string };
+
+    const sentences: Sentence[] = JSON.parse(typer.dataset.sentences ?? '[]');
+    const leadEl = typer.querySelector<HTMLElement>('.type-lead');
+    const accentEl = typer.querySelector<HTMLElement>('.type-accent');
+
+    if (leadEl && accentEl && sentences.length > 1) {
+      const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
+      // Wait for the browser to be free, then clear the server-rendered
+      // sentence so the first one types in like the rest.
+      const idle = () =>
+        new Promise<void>((resolve) => requestAnimationFrame(() => requestAnimationFrame(() => resolve())));
+
+      // Uneven keystrokes read as typing; the backspace is steady and quick.
+      const typeDelay = () => 34 + Math.random() * 30;
+      const eraseDelay = () => 18;
+
+      /* Steps `el` through the first `from`…`to` characters of `text`.
+         Counting up types the text in, counting down wipes it out. */
+      const scan = async (
+        el: HTMLElement,
+        text: string,
+        from: number,
+        to: number,
+        delay: () => number
+      ) => {
+        const step = to >= from ? 1 : -1;
+        for (let i = from; i !== to + step; i += step) {
+          el.textContent = text.slice(0, i);
+          await wait(delay());
+        }
+      };
+
+      /* The lead carries a trailing space to hold it clear of the accent
+         while both are on screen; erasing takes that space off first. */
+      const type = async ({ lead, accent }: Sentence) => {
+        typer.classList.add('is-running');
+        await scan(leadEl, lead, 1, lead.length, typeDelay);
+        leadEl.textContent = `${lead} `;
+        await scan(accentEl, accent, 1, accent.length, typeDelay);
+        typer.classList.remove('is-running');
+      };
+
+      const erase = async ({ lead, accent }: Sentence) => {
+        typer.classList.add('is-running');
+        await scan(accentEl, accent, accent.length - 1, 0, eraseDelay);
+        leadEl.textContent = lead;
+        await scan(leadEl, lead, lead.length - 1, 0, eraseDelay);
+        typer.classList.remove('is-running');
+      };
+
+      const cycle = async () => {
+        await idle();
+        leadEl.textContent = '';
+        accentEl.textContent = '';
+
+        let index = 0;
+        await wait(450);
+        await type(sentences[index]);
+
+        while (true) {
+          await wait(2600);
+
+          // Idle in place while the tab is hidden rather than burning
+          // timers on an animation nobody is watching.
+          if (document.hidden) continue;
+
+          await erase(sentences[index]);
+          index = (index + 1) % sentences.length;
+          await wait(220);
+          await type(sentences[index]);
+        }
+      };
+
+      void cycle();
+    }
+  }
+
+  /* ---------------------------------------------------------------------
+     Footer clock, pinned to Malaysia time.
+     --------------------------------------------------------------------- */
+  const clock = document.querySelector<HTMLElement>('[data-clock-value]');
+
+  if (clock) {
+    const formatter = new Intl.DateTimeFormat('en-GB', {
+      timeZone: 'Asia/Kuala_Lumpur',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: false,
+    });
+
+    const tick = () => {
+      clock.textContent = formatter.format(new Date());
+    };
+
+    tick();
+    setInterval(tick, 1000);
+  }
+
+  /* ---------------------------------------------------------------------
+     Hide the scroll hint once the visitor has taken the hint.
+     --------------------------------------------------------------------- */
+  const scrollHint = document.querySelector<HTMLElement>('.scroll-hint');
+
+  if (scrollHint) {
+    const dismiss = () => {
+      scrollHint.classList.remove('hero-in');
+      scrollHint.classList.add('is-dismissed');
+    };
+
+    window.addEventListener('scroll', dismiss, { passive: true, once: true });
+  }
+</script>
